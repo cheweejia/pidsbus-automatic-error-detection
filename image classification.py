@@ -57,5 +57,4 @@ layers.Dense(6, activation=tf.nn.softmax)])
 model.compile(optimizer = 'adam', loss = 'sparse_categorical_crossentropy', metrics=['accuracy'])
 history = model.fit(train_images, train_labels, batch_size=120, epochs=3, validation_split = 0.2)
 test_loss = model.evaluate(test_images, test_labels)
-result = model.
 
