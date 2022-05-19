@@ -68,12 +68,9 @@ def eds_to_text(img) :
     for text in texts:
         return pytesseract.image_to_string(text, config=config)
 
-def main() :
-    large = cv2.imread('data/13.jpg')
-    eds = crop_eds(large)
+def read_eds(img) :
+    eds = crop_eds(img)
     rgb = cv2.pyrDown(eds)
     dest = extract_dest(rgb)
     serv_num = extract_serv_num(rgb)
-    print("Service number: \n" + eds_to_text(serv_num) + "\nInformation: \n" + eds_to_text(dest))
-
-main()
+    return "Service number: \n" + eds_to_text(serv_num) + "\nInformation: \n" + eds_to_text(dest)
