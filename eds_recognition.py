@@ -27,16 +27,17 @@ def eds_to_text(img) :
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
     grad = cv2.morphologyEx(small, cv2.MORPH_GRADIENT, kernel)
 
-    # threshold the image using Otsu's thresholding method
+    # threshold the image
     _, bw = cv2.threshold(grad, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-    # plt.imshow(cv2.cvtColor(bw, cv2.COLOR_BGR2RGB))
-    # plt.show()
+    plt.imshow(cv2.cvtColor(bw, cv2.COLOR_BGR2RGB))
+    plt.show()
 
     # Morphological transformation
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (9, 1))
+    # MORPH_CLOSE -> dilation followed by erosion
     connected = cv2.morphologyEx(bw, cv2.MORPH_CLOSE, kernel)
-    # plt.imshow(cv2.cvtColor(connected, cv2.COLOR_BGR2RGB))
-    # plt.show()
+    plt.imshow(cv2.cvtColor(connected, cv2.COLOR_BGR2RGB))
+    plt.show()
 
     # Find contours
     # using RETR_EXTERNAL instead of RETR_CCOMP
@@ -63,6 +64,7 @@ def eds_to_text(img) :
     # plt.show()
 
     # OCR using PyTesseract
+    # Assume a single uniform block of text.
     config = "--psm 6"
     pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
     for text in texts:
