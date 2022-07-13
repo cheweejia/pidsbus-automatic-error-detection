@@ -1,18 +1,13 @@
-import cv2
-import matplotlib.pyplot as plt
-from image_capture_revised import is_bus
-from eds_recognition import read_eds
-from license_plate_recognition import anpr
+# Label map for reference.
+# Erroneous classes are EDSLit, EDSEmpty, EDSHalfLit and EDSHalfEmpty (index 3 to 6).
+# EDSRefresh and EDSGlare are assumed to be non-erroneous, since the causes are not within 
+# our scope of research (environmental and equipment factors).
+categories = ['SDFront', 'DDFront', 'EDS', 'EDSLit', 'EDSEmpty', 'EDSHalfLit', 'EDSHalfEmpty', 'EDSRefresh', 'EDSGlare']
 
-def main():
-    # while True:
-    img = cv2.imread('data/8.jpg')
-    if is_bus(img):
-        print(read_eds(img))
-        # if !is_valid_eds(eds):
-        print(anpr(img))
-            # send_report(img, eds)
-    plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-    plt.show()
-    
-main()
+def detect_error(detections):
+    class_ids = detections['detection_classes']
+    for i in range(class_ids.size):
+        class_index = class_ids[i]
+        if class_index > 2 and class_index < 7:
+            return True
+    return False
