@@ -10,14 +10,20 @@ def resize(image, scale=0.5) :
     dimensions = (width, height)
     return cv.resize(image, dimensions, interpolation = cv.INTER_AREA)
 
-# Only for the purpose of POC. During actual data collection, we will determine the optimal
-# position to crop the photo for better analysis.
-def crop(image, scale=0.5) :
-    return image[int(image.shape[0]*0.6):image.shape[0], int(image.shape[1] * 0.7):image.shape[1]]
+def anpr(img, detections):
+    height = img.shape[0]
+    width = img.shape[1]
+    boxes = detections['detection_boxes']
 
-def anpr(img):
+    ymin = int(boxes[0][0]*height)
+    xmin = int(boxes[0][1]*width)
+    ymax = int(boxes[0][2]*height)
+    xmax = int(boxes[0][3]*width)
+
+    cropped_bus = img[ymin:ymax, xmin:xmax]
+
     # Greyscale
-    gray_resized_img = cv.cvtColor(img, cv.COLOR_RGB2GRAY)
+    gray_resized_img = cv.cvtColor(cropped_bus, cv.COLOR_RGB2GRAY)
 
     # Object detection without deep learning
     # Remove noise
