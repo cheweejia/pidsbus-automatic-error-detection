@@ -84,6 +84,7 @@ def detect_bus(image):
 
     plt.imshow(cv2.cvtColor(image_np_with_detections, cv2.COLOR_BGR2RGB))
     plt.show()
+    return detections
 
 # Run detection here
 detect_bus('13.png')
